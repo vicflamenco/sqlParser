@@ -1,0 +1,306 @@
+﻿@model SqlParserUdb.Models.ViewModels.ParserViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    .boxsizingBorder {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+</style>
+
+<h1>SQL Parser UDB</h1>
+<div class="row">
+
+    <div class="col-md-4">
+        <div class="panel-group">
+       
+
+            @foreach (SqlParserUdb.Models.ViewModels.Database database in Model.Databases)
+            {
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <a data-toggle="collapse" href="#@database.Name">
+                            @database.Name
+                        </a>
+                    </div>
+                    <div id="@database.Name" class="panel-collapse collapse">
+                        <ul class="list-group">
+                            @foreach (string table in database.Tables)
+                            {
+                                <li class="list-group-item">@table</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="col-md-8">
+
+        <div>
+
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#createDatabase" role="tab" data-toggle="tab">CREATE DATABASE</a></li>
+                <li role="presentation"><a href="#dropDatabase" role="tab" data-toggle="tab">DROP DATABASE</a></li>
+                <li role="presentation"><a href="#createTable" role="tab" data-toggle="tab">CREATE TABLE</a></li>
+                <li role="presentation"><a href="#dropTable" role="tab" data-toggle="tab">DROP TABLE</a></li>
+                <li role="presentation"><a href="#select" role="tab" data-toggle="tab">SELECT</a></li>
+                <li role="presentation"><a href="#insert" role="tab" data-toggle="tab">INSERT</a></li>
+                <li role="presentation"><a href="#update" role="tab" data-toggle="tab">UPDATE</a></li>
+                <li role="presentation"><a href="#delete" role="tab" data-toggle="tab">DELETE</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                
+                
+                <div role="tabpanel" class="tab-pane active" id="createDatabase">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("ParseCreateDatabase", "Home", FormMethod.Post, new { @role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <label>
+                                        SQL Script
+                                    </label>
+                                    <textarea required rows="6" class="form-control" id="textSqlScript" name="textSqlScript" style="width:100%; margin: 0;"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Parse" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <div role="tabpanel" class="tab-pane" id="dropDatabase">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("ParseDropDatabase", "Home", FormMethod.Post, new { @role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <label>
+                                        SQL Script
+                                    </label>
+                                    <textarea required rows="6" class="form-control" id="textSqlScript" name="textSqlScript"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Parse" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div role="tabpanel" class="tab-pane" id="createTable">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("ParseCreateTable", "Home", FormMethod.Post, new { @role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <label>Bases de datos</label>
+                                    <select class="form-control" id="selectDatabase" name="selectDatabase">
+                                        @foreach (SqlParserUdb.Models.ViewModels.Database database in Model.Databases)
+                                        {
+                                            <option value="@database.Name">
+                                                @database.Name
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        SQL Script
+                                    </label>
+                                    <textarea required rows="6" class="form-control" id="textSqlScript" name="textSqlScript"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Parse" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div role="tabpanel" class="tab-pane" id="dropTable">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("ParseDropTable", "Home", FormMethod.Post, new { @role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <label>Bases de datos</label>
+                                    <select class="form-control" id="selectDatabase" name="selectDatabase">
+                                        @foreach (SqlParserUdb.Models.ViewModels.Database database in Model.Databases)
+                                        {
+                                            <option value="@database.Name">
+                                                @database.Name
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        SQL Script
+                                    </label>
+                                    <textarea required rows="6" class="form-control" id="textSqlScript" name="textSqlScript"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Parse" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="select">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("ParseSelect", "Home", FormMethod.Post, new { @role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <label>Bases de datos</label>
+                                    <select class="form-control" id="selectDatabase" name="selectDatabase">
+                                        @foreach (SqlParserUdb.Models.ViewModels.Database database in Model.Databases)
+                                        {
+                                            <option value="@database.Name">
+                                                @database.Name
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        SQL Script
+                                    </label>
+                                    <textarea required rows="6" class="form-control" id="textSqlScript" name="textSqlScript"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Parse" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+
+                <div role="tabpanel" class="tab-pane" id="insert">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("ParseInsert", "Home", FormMethod.Post, new { @role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <label>Bases de datos</label>
+                                    <select class="form-control" id="selectDatabase" name="selectDatabase">
+                                        @foreach (SqlParserUdb.Models.ViewModels.Database database in Model.Databases)
+                                        {
+                                            <option value="@database.Name">
+                                                @database.Name
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        SQL Script
+                                    </label>
+                                    <textarea required rows="6" class="form-control" id="textSqlScript" name="textSqlScript"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Parse" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="update">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("ParseUpdate", "Home", FormMethod.Post, new { @role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <label>Bases de datos</label>
+                                    <select class="form-control" id="selectDatabase" name="selectDatabase">
+                                        @foreach (SqlParserUdb.Models.ViewModels.Database database in Model.Databases)
+                                        {
+                                            <option value="@database.Name">
+                                                @database.Name
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        SQL Script
+                                    </label>
+                                    <textarea required rows="6" class="form-control" id="textSqlScript" name="textSqlScript"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Parse" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="delete">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @using (Html.BeginForm("ParseDelete", "Home", FormMethod.Post, new { @role = "form" }))
+                            {
+                                <div class="form-group">
+                                    <label>Bases de datos</label>
+                                    <select class="form-control" id="selectDatabase" name="selectDatabase">
+                                        @foreach (SqlParserUdb.Models.ViewModels.Database database in Model.Databases)
+                                        {
+                                            <option value="@database.Name">
+                                                @database.Name
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>
+                                        SQL Script
+                                    </label>
+                                    <textarea required rows="6" class="form-control" id="textSqlScript" name="textSqlScript"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" value="Parse" class="btn btn-primary" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        
+
+    </div>
+</div>

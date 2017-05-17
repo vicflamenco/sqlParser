@@ -1,0 +1,105 @@
+﻿@model SqlParserUdb.Models.ViewModels.ResultViewModel
+@using System.Data;
+@{
+    ViewBag.Title = "Parse";
+}
+
+<h2>SQL Parser UDB</h2>
+@Html.ActionLink("Nueva consulta", "Index", null, new { @class="btn btn-primary" })
+
+<br /><br />
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th colspan="2">
+                <h4><strong>Resultados del análisis</strong></h4>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <strong>Script SQL</strong>
+            </td>
+            <td>
+                <code>@Model.SqlScript</code>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Sintaxis esperada</strong>
+            </td>
+            <td>
+                <code>@Model.Syntax</code>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <strong>Resultado</strong>
+            </td>
+            @if (Model.Result.Success)
+            {
+                <td colspan="2">
+                    <span class="text-success">Análisis finalizado correctamente</span>
+                </td>
+            }
+            else
+            {
+                <td colspan="2">
+                    <span class="danger">@Model.Result.ErrorMessage</span>
+                </td>
+            }
+        </tr>
+    </tbody>
+</table>
+<br />
+<br />
+
+<table class="table table-bordered table-hover">
+
+    <thead>
+        <tr>
+            <td colspan="@Model.Table.Columns.Count">
+                <h4><strong>Resultados de la consulta</strong></h4>
+            </td>
+        </tr>
+        <tr class="success">
+            @if (Model.Table.Columns.Count > 0)
+            {
+                foreach (DataColumn column in Model.Table.Columns)
+                {
+                    <th>
+                        @column.ColumnName
+                    </th>
+                }
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @if (Model.Table.Rows.Count > 0)
+        {
+            foreach (DataRow row in Model.Table.Rows)
+            {
+                <tr>
+                    @foreach (DataColumn column in Model.Table.Columns)
+                    {
+                        <td>
+                            @row[column]
+                        </td>
+                    }
+                </tr>
+            }
+        }
+        else
+        {
+            <tr class="warning">
+                <td colspan="@Model.Table.Columns.Count" class="text-center">
+                    No se encontraron datos
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
